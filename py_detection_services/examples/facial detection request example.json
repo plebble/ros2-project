@@ -1,0 +1,8 @@
+{
+	"source":"realsense_publisher",
+	"image": {
+		"dimensions":[480,640],
+		"encoding":"b64_jpg",
+		"data":"<really long b64 string of encoded jpg goodness>"
+	}
+}

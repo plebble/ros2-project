@@ -1,0 +1,13 @@
+{
+	"success":true,
+	"source":"ehfehfieuf",
+	"detections":[
+		{
+			"box":["x","y","width","height"],
+			"confidence":0.84,
+			"keypoints": {}
+		},
+		{},
+		{}
+	]
+}

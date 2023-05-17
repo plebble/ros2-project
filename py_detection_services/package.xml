@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>py_detection_services</name>
+  <version>0.0.0</version>
+  <description>Package containing service nodes for making detections from client requests, also contains basic test nodes</description>
+  <maintainer email="superlolcopter2@gmail.com">jacob</maintainer>
+  <license>TODO: License declaration</license>
+
+  <depend>rclpy</depend>
+  <depend>string_service_interface</depend>
+  <exec_depend>cv2</exec_depend>
+  <exec_depend>base64</exec_depend>
+  <exec_depend>json</exec_depend>
+  <exec_depend>mtcnn</exec_depend>
+  <exec_depend>time</exec_depend>
+  <exec_depend>numpy</exec_depend>
+  <exec_depend>facenet-pytorch</exec_depend>
+  <exec_depend>SixDRepNet</exec_depend>
+  <exec_depend>torch</exec_depend>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
