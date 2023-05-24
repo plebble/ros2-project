@@ -45,12 +45,13 @@ class MinimalSubscriber(Node):
 		frame = b64_jpg_decode(dict["image"]["data"])	
 
 		
-
-		if dict["source"] == "realsense_publisher": # this can be done either by the source label, or a try-except block of data["depth"]
+		try:
 			depth_frame = b64_typed_decode(dict["depth"]["data"])
 			colour_map = cv2.applyColorMap(cv2.convertScaleAbs(depth_frame, alpha=0.03), cv2.COLORMAP_JET)
 
 			frame = np.concatenate((frame, colour_map), axis=1)
+		except KeyError:
+			pass
 
 
 		show_img(dict["source"], frame)
