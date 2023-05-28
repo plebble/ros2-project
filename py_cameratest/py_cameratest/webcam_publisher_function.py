@@ -20,7 +20,7 @@ class MinimalPublisher(Node):
     def __init__(self):
         super().__init__('webcam_publisher')
         self.publisher_ = self.create_publisher(String, self.topic_name, 10)
-        timer_period = 1/self.target_fps  # seconds, inverse of target framerate
+        timer_period = 0.001
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
         self.camera = cv2.VideoCapture(-1) # should probably make this run with a parameter in the future
