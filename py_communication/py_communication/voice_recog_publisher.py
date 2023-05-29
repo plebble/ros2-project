@@ -26,9 +26,8 @@ class MinimalPublisher(Node):
 		super().__init__('voice_recognition')
 		self.publisher = self.create_publisher(String, self.topic_name, 10)
 
-		self.r = sr.Recognizer()
-		self.mic = find_mic("Arctis Pro Wireless: USB Audio")
-
+		self.audio_engine = sr.Recognizer()
+		self.audio_engine.dynamic_energy_threshold = True
 	def send_message(self,text):
 		msg = String()
 		dict = {}
@@ -47,33 +46,42 @@ def main(args=None):
 	rclpy.init(args=args)
 
 	minimal_publisher = MinimalPublisher()
-
+	mic_label = "C920"
 	# there are no callbacks here, the node does not need to spin.
-	with minimal_publisher.mic as source:
-		minimal_publisher.r.adjust_for_ambient_noise(source)
+	
+	with find_mic(mic_label) as source:
+		minimal_publisher.audio_engine.dynamic_energy_threshold = False
+		print("calibrating microphone, please be quiet!")
+		minimal_publisher.audio_engine.adjust_for_ambient_noise(source,duration=3)
+		minimal_publisher.audio_engine.energy_threshold *= 5
+		print("calibration finished, calibrated as {}.".format(minimal_publisher.audio_engine.energy_threshold))
 		while True:
+			minimal_publisher.audio_engine.energy_threshold = 80 # force it
+			dict = {}
+			dict["listening_start"] = time.time()
+			print("started listening for something to be said (threshold = {:.2f})...".format(minimal_publisher.audio_engine.energy_threshold))
 			try:
-				msg = String()
-				dict = {}
-
-				dict["listening_start"] = time.time()
-				print("started listening for something to be said...")
-				audio = minimal_publisher.r.listen(source)
-
-				print("stopped listening, sending audio...")
-				text = minimal_publisher.r.recognize_google(audio)
-				print("speech recognised as:",text)
-
-				dict["timestamp"] = time.time()
-				dict["source"] = minimal_publisher.get_name()
-				dict["text"] = text
-
-				msg.data = json.dumps(dict,indent=4)
-				minimal_publisher.publisher.publish(msg)
-
-				print(msg.data)
-			except sr.UnknownValueError:
+				audio = minimal_publisher.audio_engine.listen(source,timeout=10)
+			except sr.WaitTimeoutError:
 				continue
+			
+			print("stopped listening, sending audio...")
+			try:
+				text = minimal_publisher.audio_engine.recognize_google(audio)
+				print("speech recognised as:",text)
+			except sr.UnknownValueError:
+				print("could not recognise anything.")
+				continue
+				
+			msg = String()
+			dict["timestamp"] = time.time()
+			dict["source"] = minimal_publisher.get_name()
+			dict["text"] = text
+			msg.data = json.dumps(dict,indent=4)
+			minimal_publisher.publisher.publish(msg)
+
+			print(msg.data)
+				
 	
 	# Shrek : 'as if thats ever gonnae happen'
 	minimal_publisher.destroy_node()

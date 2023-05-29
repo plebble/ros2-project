@@ -23,7 +23,8 @@ setup(
             'tts_subscriber = py_communication.tts_subscriber:main',
             'tts_test_client = py_communication.tts_test_client:main',
             "voice_recogniser = py_communication.voice_recog_publisher:main",
-            "voice_recog_control = py_communication.voice_recog_control:main"
+            "voice_recog_control = py_communication.voice_recog_control:main",
+            "chat_log = py_communication.chat_log_display:main"
         ],
     },
 )

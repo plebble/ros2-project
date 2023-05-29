@@ -12,6 +12,7 @@
   <exec_depend>pyttsx3</exec_depend>
   <exec_depend>time</exec_depend>
   <exec_depend>speech_recognition</exec_depend>
+  <exec_depend>datetime</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
