@@ -7,3 +7,5 @@ gnome-terminal --title="Voice Recognition" -e "bash -c 'cd ~/ros2_ws/; source /o
 gnome-terminal --title="Voice Recog. Controller" -e "bash -c 'cd ~/ros2_ws/; source /opt/ros/galactic/setup.bash; source /opt/ros/dashing/setup.bash; . install/setup.bash; ros2 run py_communication voice_recog_control'"
 
 gnome-terminal --title="Text-to-Speech Output" -e "bash -c 'cd ~/ros2_ws/; source /opt/ros/galactic/setup.bash; source /opt/ros/dashing/setup.bash; . install/setup.bash; ros2 run py_communication tts_subscriber'"
+
+gnome-terminal --title="Davinci Responder" -e "bash -c 'cd ~/ros2_ws/; source /opt/ros/galactic/setup.bash; source /opt/ros/dashing/setup.bash; . install/setup.bash; ros2 run py_communication davinci_responder'"

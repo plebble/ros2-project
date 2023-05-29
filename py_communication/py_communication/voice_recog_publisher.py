@@ -23,7 +23,7 @@ def find_mic(device_label):
 class MinimalPublisher(Node):
 	topic_name = "voice_recog_prefilter"
 	def __init__(self):
-		super().__init__('voice_recognition')
+		super().__init__('voice_recog')
 		self.publisher = self.create_publisher(String, self.topic_name, 10)
 
 		self.audio_engine = sr.Recognizer()

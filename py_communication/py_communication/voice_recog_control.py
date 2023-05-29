@@ -17,7 +17,7 @@ class CommunicationSubscriber(Node):
 	reenable_timestamp = 0
 
 	def __init__(self):
-		super().__init__('tts_speech_node')
+		super().__init__('voice_recog_control')
 		self.input_subscription = self.create_subscription(
 			String,
 			self.input_topic_name,

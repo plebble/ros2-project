@@ -30,7 +30,7 @@ class CommunicationSubscriber(Node):
 		print("Recieved message from '{}', parsing JSON...".format(self.topic_name))
 		dict = json.loads(msg.data)
 		print(msg.data)
-		if dict["source"] == "voice_recognition":
+		if dict["source"] == "voice_recog":
 			print("Recieved voice_recognition; not speaking because it is me.")
 			# dont say anything that the voice recog. picked up, the robot doesnt need to say what it hears
 			return
