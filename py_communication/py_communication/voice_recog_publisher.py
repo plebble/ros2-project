@@ -56,7 +56,7 @@ def main(args=None):
 		minimal_publisher.audio_engine.energy_threshold *= 5
 		print("calibration finished, calibrated as {}.".format(minimal_publisher.audio_engine.energy_threshold))
 		while True:
-			minimal_publisher.audio_engine.energy_threshold = 80 # force it
+			minimal_publisher.audio_engine.energy_threshold = 180 # force it
 			dict = {}
 			dict["listening_start"] = time.time()
 			print("started listening for something to be said (threshold = {:.2f})...".format(minimal_publisher.audio_engine.energy_threshold))
