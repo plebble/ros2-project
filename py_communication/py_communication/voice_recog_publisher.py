@@ -27,7 +27,7 @@ class MinimalPublisher(Node):
 		self.publisher = self.create_publisher(String, self.topic_name, 10)
 
 		self.audio_engine = sr.Recognizer()
-		self.audio_engine.dynamic_energy_threshold = True
+		self.audio_engine.dynamic_energy_threshold = False
 	def send_message(self,text):
 		msg = String()
 		dict = {}
@@ -46,7 +46,7 @@ def main(args=None):
 	rclpy.init(args=args)
 
 	minimal_publisher = MinimalPublisher()
-	mic_label = "C920"
+	mic_label = "USB PnP"
 	# there are no callbacks here, the node does not need to spin.
 	
 	with find_mic(mic_label) as source:

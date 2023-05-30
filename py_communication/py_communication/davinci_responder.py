@@ -35,7 +35,7 @@ class CommunicationSubscriber(Node):
 		self.label_mappings = {
 		"voice_recog" : "USER",
 		"voice_recog_control" : "USER",
-		"manual_reply" : "OPERATOR",
+		"manual_reply" : "USER",
 		self.get_name(): "SYSTEM"
 		}
 		self.reply_to = ["USER"]

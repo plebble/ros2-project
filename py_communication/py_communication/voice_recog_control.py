@@ -15,6 +15,7 @@ class CommunicationSubscriber(Node):
 
 	enabled = True
 	reenable_timestamp = 0
+	time_offset = 2
 
 	def __init__(self):
 		super().__init__('voice_recog_control')
@@ -43,7 +44,7 @@ class CommunicationSubscriber(Node):
 			print("Recieved message from '{}', parsing JSON...".format(self.input_topic_name))
 		
 		dict = json.loads(msg.data)
-		if dict["listening_start"] < self.reenable_timestamp:
+		if dict["listening_start"] < self.reenable_timestamp - self.time_offset:
 			print("Voice rec. started while the disabled; discarding...")
 			return
 
