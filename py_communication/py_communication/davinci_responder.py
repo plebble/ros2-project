@@ -23,7 +23,7 @@ class CommunicationSubscriber(Node):
 	reenable_timestamp = 0
 
 	def __init__(self):
-		super().__init__('tts_speech_node')
+		super().__init__('response_generator')
 		self.input_subscription = self.create_subscription(
 			String,
 			self.topic_name,
@@ -35,8 +35,9 @@ class CommunicationSubscriber(Node):
 		self.label_mappings = {
 		"voice_recog" : "USER",
 		"voice_recog_control" : "USER",
-		"manual_reply" : "USER",
-		self.get_name(): "SYSTEM"
+		"manual_reply" : "OPERATOR",
+		self.get_name(): "SYSTEM",
+		"focus_tracker": "SYSTEM"
 		}
 		self.reply_to = ["USER"]
 

@@ -6,4 +6,4 @@ gnome-terminal --title="Face & Pose Detector" -e "bash -c 'cd ~/ros2_ws/; source
 
 sleep 5
 
-gnome-terminal --title="middleman process" -e "bash -c 'cd ~/ros2_ws/; source /opt/ros/galactic/setup.bash; source /opt/ros/dashing/setup.bash; . install/setup.bash; ros2 run py_cameratest detection_middleman'"
+gnome-terminal --title="Focus Tracker" -e "bash -c 'cd ~/ros2_ws/; source /opt/ros/galactic/setup.bash; source /opt/ros/dashing/setup.bash; . install/setup.bash; ros2 run py_cameratest focus_tracker'"

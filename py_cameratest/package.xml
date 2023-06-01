@@ -13,6 +13,7 @@
   <exec_depend>ros2launch</exec_depend>
   <exec_depend>numpy</exec_depend>
   <exec_depend>pyrealsense2</exec_depend>
+  <exec_depend>uuid</exec_depend>
   <depend>string_service_interface</depend>
 
   <test_depend>ament_copyright</test_depend>

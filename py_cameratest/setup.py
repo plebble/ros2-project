@@ -28,7 +28,8 @@ setup(
             "rs_talker = py_cameratest.realsense_publisher_function:main",
             'listener = py_cameratest.webcam_subscriber_function:main',
             'multi_listener = py_cameratest.multicam_subscriber_function:main',
-            "detection_middleman = py_cameratest.detection_requester:main"
+            "detection_tester = py_cameratest.detection_requester:main",
+            "focus_tracker = py_cameratest.focus_tracker:main"
         ],
     },
 )
