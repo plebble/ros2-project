@@ -234,16 +234,20 @@ class TrackerNode(Node):
 				except:
 					self.face_tracker.tracked_faces[self.focused_id]["persistent"]["focus_unlock_started"] = time.time()
 
-				unlock_duration = time.time() - self.face_tracker.tracked_faces[self.focused_id]["persistent"]["focus_unlock_started"]
-				if unlock_duration > self.focus_unlock_duration:
-					del self.face_tracker.tracked_faces[self.focused_id]["persistent"]["focus_unlock_started"]
-					self.unfocused_action()
-					self.focused_id = ""
+				
 			else:
 				try:
 					del self.face_tracker.tracked_faces[self.focused_id]["persistent"]["focus_unlock_started"]
 				except:
 					pass
+			try:
+				unlock_duration = time.time() - self.face_tracker.tracked_faces[self.focused_id]["persistent"]["focus_unlock_started"]
+				if unlock_duration > self.focus_unlock_duration:
+					del self.face_tracker.tracked_faces[self.focused_id]["persistent"]["focus_unlock_started"]
+					self.unfocused_action()
+					self.focused_id = ""
+			except KeyError:
+				pass
 		
 
 	def spin(self):
@@ -289,6 +293,11 @@ class TrackerNode(Node):
 	def draw_debug(self):
 		frame = self.current_frame
 		height,width,chan = frame.shape
+
+		arrow_scale = 100
+		min_threshold_circle_radius = int(arrow_scale * (1-self.focus_lock_cosang_threshold**2)**0.5)
+		max_threshold_circle_radius = int(arrow_scale * (1-self.focus_unlock_cosang_threshold**2)**0.5)
+
 		for id in list(self.face_tracker.tracked_faces.keys()):
 			detection = self.face_tracker.tracked_faces[id]["detection_data"]
 			persistent = self.face_tracker.tracked_faces[id]["persistent"]
@@ -296,12 +305,13 @@ class TrackerNode(Node):
 			y1 = clamp(detection["y1"],0,height)
 			x2 = clamp(detection["x2"],0,width)
 			y2 = clamp(detection["y2"],0,height)
-
+			center = (int((x1+x2)/2),int((y1+y2)/2))
 			colour = tuple(persistent["colour"])
 			print(colour)
 
 			frame = cv2.rectangle(frame,(x1,y1),(x2,y2),colour,2)
 			frame = cv2.putText(frame,"{}...{}".format(id[:4],id[-4:]),(x1+5,y1+20),cv2.FONT_HERSHEY_SIMPLEX,float((x2-x1)*0.005),colour,2)
+
 
 			try:
 				duration=time.time()-self.face_tracker.tracked_faces[id]["persistent"]["focus_lock_started"]
@@ -319,13 +329,31 @@ class TrackerNode(Node):
 				box_width = int(abs(x2-x1) * progress)
 
 				frame = cv2.rectangle(frame,(x1,y2-20),(x1+box_width,y2),(0,0,200),-1)
-
 			except KeyError:
 				pass
 
-			
+			try:
+				duration=time.time()-self.face_tracker.tracked_faces[id]["last_updated"]
+				progress = duration / self.face_tracker.expiry_timer
+				box_width = int(abs(x2-x1) * progress)
+
+				frame = cv2.rectangle(frame,(x1,y2-20),(x1+box_width,y2),(40,40,40),-1)
+			except KeyError:
+				pass
+
+			try:
+				dir_x = detection["facing_vec"][0]*arrow_scale
+				dir_y = detection["facing_vec"][1]*arrow_scale
+				frame = cv2.arrowedLine(frame,center,(int(center[0]+dir_x),int(center[1]+dir_y)),(200,0,0),2)
+			except KeyError:
+				pass
+
 			if id == self.focused_id:
 				frame = cv2.putText(frame,"Locked onto: {}...{}".format(id[:4],id[-4:]),(10,30),cv2.FONT_HERSHEY_SIMPLEX,float(width*0.001),colour,2)
+				frame = cv2.circle(frame,center,max_threshold_circle_radius,(0,0,200),2)
+			elif self.focused_id == "":
+				frame = cv2.circle(frame,center,min_threshold_circle_radius,(0,200,0),2)
+
 			
 
 		msg = String()
