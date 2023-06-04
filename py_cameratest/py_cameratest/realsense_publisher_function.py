@@ -35,8 +35,8 @@ class MinimalPublisher(Node):
 		self.configuration = rs.config()
 
 		self.configuration.enable_stream(rs.stream.color, self.target_res[0], self.target_res[1], rs.format.bgr8, self.target_fps)
-		if no_depth==False:
-			self.configuration.enable_stream(rs.stream.depth, self.target_res[0], self.target_res[1], rs.format.z16, self.target_fps)
+		"""if no_depth==False:
+			self.configuration.enable_stream(rs.stream.depth, self.target_res[0], self.target_res[1], rs.format.z16, self.target_fps)"""
 
 		self.profile = self.pipeline.start(self.configuration)
 		self.pipeline_started = True
@@ -66,12 +66,13 @@ class MinimalPublisher(Node):
 		dict["image"]["dimensions"] = list(colour_frame.shape)
 		dict["image"]["encoding"] = "b64_jpg"
 		dict["image"]["data"] = str(b64_jpg_encode(colour_frame))
-		if self.no_depth == False:
+		
+		"""if self.no_depth == False:
 			depth_frame = np.asanyarray(frame_pair.get_depth_frame().get_data())
 			dict["depth"] = {}
 			dict["depth"]["dimensions"] = list(depth_frame.shape)
 			dict["depth"]["encoding"] = "b64_typed"
-			dict["depth"]["data"] = b64_typed_encode(depth_frame)		
+			dict["depth"]["data"] = b64_typed_encode(depth_frame)	"""	
 
 		msg.data = json.dumps(dict,indent=4)
 		self.publisher_.publish(msg)
@@ -83,12 +84,8 @@ class MinimalPublisher(Node):
 
 def main(args=None):
 	rclpy.init(args=args)
-	try:
-		no_depth = sys.argv[1]=="--no-depth"
-	except IndexError:
-		no_depth = False
 
-	minimal_publisher = MinimalPublisher(no_depth)
+	minimal_publisher = MinimalPublisher()
 
 	rclpy.spin(minimal_publisher)
 
