@@ -65,7 +65,7 @@ def main(args=None):
 			except sr.WaitTimeoutError:
 				continue
 			
-			print("stopped listening, sending audio...")
+			print("stopped listening, sending audio... (timestamp = {:.4f})".format(time.time()))
 			try:
 				text = minimal_publisher.audio_engine.recognize_google(audio)
 				print("speech recognised as:",text)

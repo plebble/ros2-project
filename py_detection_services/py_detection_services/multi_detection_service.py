@@ -37,6 +37,7 @@ class MinimalService(Node):
 
 		image = b64_jpg_decode(dict["image"]["data"])
 		detection = self.face_detector.detect(image)
+		print("Face detection took {:.4f}s".format(time.time()-start))
 		detections = []
 		try:
 			n = len(detection[0])
@@ -58,6 +59,7 @@ class MinimalService(Node):
 		except TypeError:
 			new_dict["detections"] = []
 
+		p_start = time.time()
 		for i,face in enumerate(detections):
 			x1 = face["x1"]
 			y1 = face["y1"]
@@ -84,6 +86,10 @@ class MinimalService(Node):
 			y = np.sin(-pitch)
 			z = np.cos(pitch)*np.cos(yaw)
 			detections[i]["facing_vec"] = [x, y, z]
+		if len(detections) > 0:
+			print("Pose detection took {:.4f}s avg. per face".format((time.time()-p_start)/len(detections)))
+		else:
+			print("No pose detections attempted, zero faces.")
 
 		new_dict["duration"] = round(time.time()-start,4)
 		response.response_data = json.dumps(new_dict,indent=4)

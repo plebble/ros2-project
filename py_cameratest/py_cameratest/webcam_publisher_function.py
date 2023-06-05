@@ -23,7 +23,7 @@ class MinimalPublisher(Node):
         timer_period = 0.001
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
-        self.camera = cv2.VideoCapture(2) # should probably make this run with a parameter in the future
+        self.camera = cv2.VideoCapture(0) # should probably make this run with a parameter in the future
         self.camera.set(cv2.CAP_PROP_FRAME_WIDTH,self.target_res[0])
         self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT,self.target_res[1])                     
 
